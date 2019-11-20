@@ -67,7 +67,7 @@ class CharacterCreation extends Component{
     }
     handleSubmit = async (e) => {
         e.preventDefault();
-        const companionUrl = `${process.env.REACT_APP_API_URL}/api/v1/companions`;
+        const companionUrl = `${process.env.REACT_APP_API_URL}/api/v1/companions/`;
         const companionResponse = await fetch(companionUrl, {
             method: "POST",
             body: JSON.stringify(this.state),

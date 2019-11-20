@@ -36,9 +36,9 @@ class NavBar extends Component{
                         {/* </Link> */}
                     </Menu.Item>
                     <Menu.Item position="right">
-                        {/* <Link to="/"> */}
+                        <Link to="/">
                             <Button value="logout" onClick={this.handleNav}>Logout</Button>
-                        {/* </Link> */}
+                        </Link>
                     </Menu.Item>
                 </Menu>
             </Header>

@@ -17,7 +17,7 @@ class Login extends Component{
 	}
 	handleSubmit = async (e) => {
         e.preventDefault();
-        const loginUrl = `${process.env.REACT_APP_API_URL}/api/v1/user/login`;
+        const loginUrl = `${process.env.REACT_APP_API_URL}/api/v1/users/login`;
         const loginResponse = await fetch(loginUrl, {
             method: "POST",
             body: JSON.stringify(this.state),
@@ -28,9 +28,12 @@ class Login extends Component{
         });
         
         const parsedResponse = await loginResponse.json();
+		console.log(parsedResponse);
 
         if(parsedResponse.status.code === 200){
-            this.props.history.push('/home')
+			console.log(parsedResponse.data.id)
+			localStorage.setItem('sessionUserId', parsedResponse.data.id)
+			this.props.history.push('/home')
         } else{
             this.setState({
                 errorMsg: parsedResponse.status.message
@@ -42,7 +45,7 @@ class Login extends Component{
 			<Card centered>
 				<Card.Content>
 					<Header centered="true">Login</Header>
-					<Form>
+					<Form onSubmit={this.handleSubmit}>
 						<Label>Email</Label>
 						<Form.Input name="email" value={this.state.email} type="email" onChange={this.handleChange}/>
 						<Label>Password</Label>

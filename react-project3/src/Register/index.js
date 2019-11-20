@@ -17,7 +17,7 @@ class Registration extends Component{
     }
     handleSubmit = async (e) => {
         e.preventDefault();
-        const registrationUrl = `${process.env.REACT_APP_API_URL}/api/v1/user/register`;
+        const registrationUrl = `${process.env.REACT_APP_API_URL}/api/v1/users/register`;
         const registerResponse = await fetch(registrationUrl, {
             method: "POST",
             body: JSON.stringify(this.state),
@@ -30,6 +30,8 @@ class Registration extends Component{
         const parsedResponse = await registerResponse.json();
 
         if(parsedResponse.status.code === 201){
+            console.log(parsedResponse);
+            localStorage.setItem('sessionUserId', parsedResponse.data.id)
             this.props.history.push('/create')
         } else{
             this.setState({

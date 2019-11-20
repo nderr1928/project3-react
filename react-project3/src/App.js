@@ -1,25 +1,33 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Login from './Login';
+import Register from './Register';
+import {Route, Switch} from 'react-router-dom';
+import MainContainer from './MainContainer';
+import CharacterCreation from './CharacterCreation'
+import Profile from './Profile'
+
+const my404 = () => {
+  return(
+    <div>
+      <h3>Error!</h3>
+    </div>
+  )
+}
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <main>
+      <Switch>
+        <Route exact path='/' component= {Login} />
+        <Route exact path='/register' component={Register} />
+        <Route exact path='/home' component={MainContainer}/>
+        <Route exact path='/create' component={CharacterCreation} />
+        <Route exact path='/profile' component={Profile} />
+        <Route component={my404} />
+      </Switch>
+    </main>
   );
 }
 

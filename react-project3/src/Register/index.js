@@ -6,7 +6,7 @@ class Registration extends Component{
         super();
         this.state = {
             email: "",
-            displayName: "",
+            display_name: "",
             password: ""
         }
     }
@@ -48,7 +48,7 @@ class Registration extends Component{
                         <Label>Email</Label>
                         <Form.Input name="email" value={this.state.email} type="email" onChange={this.handleChange}/>
                         <Label>Display Name</Label>
-                        <Form.Input name="displayName" value={this.state.displayName} type="text" onChange={this.handleChange} />
+                        <Form.Input name="display_name" value={this.state.display_name} type="text" onChange={this.handleChange} />
                         <Label>Password</Label>
                         <Form.Input name="password" value={this.state.password} type="password" onChange={this.handleChange}/>
                         <Button color="green" >Register</Button>

@@ -41,7 +41,7 @@ class Registration extends Component{
     }
     render(){
         return(
-            <Card centered>
+            <Card centered style={{justifyContent: "center"}, {alignContent: 'center'}, {display: 'grid'}, {background: "linear-gradient(white, black)"}}>
                 <Card.Content>
                     <Header>Registration</Header>
                     <Form onSubmit={this.handleSubmit}>

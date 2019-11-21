@@ -7,7 +7,7 @@ class MainContainer extends Component{
     constructor(){
         super();
         this.state = {
-            displayName: ""
+            currentUser: []
         }
     }
     componentDidMount(){
@@ -15,20 +15,23 @@ class MainContainer extends Component{
     }
     getUser = async () => {
         try{
+            // console.log("get user function");
             const userId = localStorage.getItem('sessionUserId');
+            // console.log(userId);
             const user = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/users/${userId}`, {
                 credentials: 'include',
                 method: "GET"
             })
 
-            const parsedUsers = await user.json()
-            
+            const parsedUser = await user.json()
+            // console.log("currentUser:", parsedUser);
             this.setState({
-
+                currentUser: parsedUser
             })
 
         } catch(err){
             console.log(err);
+            this.props.history.push('/')
         }
     }
     render(){
@@ -36,7 +39,7 @@ class MainContainer extends Component{
             <React.Fragment>
                 <NavBar />
                 <h1>
-                    Welcome {this.state.displayName}
+                    Welcome {this.state.currentUser.display_name}
                 </h1>
             </React.Fragment>
         )

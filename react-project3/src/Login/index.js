@@ -2,6 +2,10 @@ import React, {Component} from 'react';
 import { Form, Label, Button, Card, Message, Header} from 'semantic-ui-react';
 import {Link} from 'react-router-dom'
 
+const style = {
+
+}
+
 class Login extends Component{
 	constructor(){
 		super();
@@ -42,7 +46,7 @@ class Login extends Component{
     }
 	render(){
 		return(
-			<Card centered>
+			<Card centered style={{justifyContent: "center"}, {alignContent: 'center'}, {display: 'grid'}, {background: "linear-gradient(white, black)"}}>
 				<Card.Content>
 					<Header centered="true">Login</Header>
 					<Form onSubmit={this.handleSubmit}>
@@ -52,6 +56,7 @@ class Login extends Component{
 						<Form.Input name="password" value={this.state.password} type="password" onChange={this.handleChange}/>
 						<Button color="green">Login</Button>
 						{this.state.errorMsg ? <Message negative>{this.state.errorMsg}</Message> : null}
+						{/* {this.props.location.state.loggedout ? <Message positive>{this.props.location.state.msg }</Message> : null} */}
 					</Form>
 				</Card.Content>
 				<Card.Content>

@@ -10,11 +10,12 @@ class NavBar extends Component{
         }
     }
     handleNav = async (e) => {
-        console.log(e.target);
         await this.setState({
             active: e.currentTarget.value
         })
-        console.log(this.state.active);
+    }
+    handleLogout = async (e) => {
+        localStorage.setItem('sessionUserId', null);
     }
     render(){
         return(
@@ -31,13 +32,19 @@ class NavBar extends Component{
                         </Link>
                     </Menu.Item>
                     <Menu.Item name="locations" active={this.state.active==="locations"}>
-                        {/* <Link to="/locations"> */}
+                        <Link to="/locations">
                             <Button value="locations" onClick={this.handleNav}>Locations</Button>
-                        {/* </Link> */}
+                        </Link>
                     </Menu.Item>
                     <Menu.Item position="right">
-                        <Link to="/">
-                            <Button value="logout" onClick={this.handleNav}>Logout</Button>
+                        <Link to={{
+                            pathname:'/',
+                            state: {
+                                loggedout: true,
+                                msg: "You have successfully logged out"
+                            }
+                        }}>
+                            <Button value="logout" onClick={this.handleLogout}>Logout</Button>
                         </Link>
                     </Menu.Item>
                 </Menu>

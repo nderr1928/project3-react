@@ -70,6 +70,7 @@ class CharacterCreation extends Component{
         const companionUrl = `${process.env.REACT_APP_API_URL}/api/v1/companions/`;
         const companionResponse = await fetch(companionUrl, {
             method: "POST",
+            credentials: 'include',
             body: JSON.stringify(this.state),
             headers: {
                 'Content-Type': 'application/json'

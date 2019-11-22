@@ -9,11 +9,9 @@ class CharacterCreation extends Component{
             name: "",
             race: "",
             char_class: "",
-            level: '',
-            experience: '',
             health: '',
             damage: '',
-            image: ''
+            image: '/testImages/default.gif'
         }
     }
     handleChange = (e) => {
@@ -31,25 +29,29 @@ class CharacterCreation extends Component{
             case 'Human':
                 this.setState({
                     health: 14,
-                    damage: 2
+                    damage: 2,
+                    image: '/testImages/human.png'
                 })
                 break;
             case 'Orc':
                 this.setState({
                     health: 15,
-                    damage: 3
+                    damage: 3,
+                    image: '/testImages/orc.png'
                 })
                 break;
             case 'Elf':
                 this.setState({
                     health: 8,
-                    damage: 1
+                    damage: 1,
+                    image:'/testImages/default.gif'
                 })
                 break;
             case 'Dwarf':
                 this.setState({
                     health: 12,
-                    damage: 2
+                    damage: 2,
+                    image: '/testImages/dwarf.png'
                 })
                 break;
             default:
@@ -127,7 +129,7 @@ class CharacterCreation extends Component{
                         </Card>
                     </Grid.Column>
                     <Grid.Column width={8}>
-                        <RenderCompanionImage race={this.state.race} />
+                        <img src={this.state.image} />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

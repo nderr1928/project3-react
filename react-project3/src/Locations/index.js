@@ -1,5 +1,22 @@
 import React, {Component} from 'react';
 import NavBar from '../NavBar';
+import {Card, Button, Grid} from 'semantic-ui-react';
+
+const locationSelectionStyle = {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignContent: 'center'
+}
+
+const bodyStyle = {
+    backgroundImage: "url('/testImages/background.jpeg')", 
+    height: 100+'vh', 
+    width: 100+'vw',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover'
+}
+
 
 class Locations extends Component{
     constructor(props){
@@ -292,19 +309,38 @@ class Locations extends Component{
         return(
             <React.Fragment>
                 <NavBar />
-                <h1>
-                    You have reached main location page
-                </h1>
-                <button type="button" onClick={() => this.pickLocation(1)}>Market</button>
-                <button type="button" onClick={() => this.pickLocation(2)}>Dungeon</button>
-                <button type="button" onClick={() => this.handleSubmit()}>Add Companion</button>
-                <button type="button" onClick={() => this.createItem(1)}>minor potion</button>
-                <button type="button" onClick={() => this.createItem(2)}>potion</button>
-                <button type="button" onClick={() => this.createItem(3)}>super potion</button>
+                <Grid>
+                    <Grid.Column>
+                        <Grid.Row>
+                            <Button type="button" onClick={() => this.pickLocation(1)}>Market</Button>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Button type="button" onClick={() => this.pickLocation(2)}>Dungeon</Button>
+                        </Grid.Row>
+                    </Grid.Column>
+                </Grid>
+                <div style={locationSelectionStyle}>
+                    
+                </div>
+                    <Card centered>
+                        <h1>
+                            You have reached main location page
+                        </h1>
+                        
+                        <button type="button" onClick={() => this.handleSubmit()}>Add Companion</button>
+                        <button type="button" onClick={() => this.createItem(1)}>minor potion</button>
+                        <button type="button" onClick={() => this.createItem(2)}>potion</button>
+                        <button type="button" onClick={() => this.createItem(3)}>super potion</button>
+                    </Card>
+                    <div style={bodyStyle}>
+                        <h1>Body</h1>
+
+                    </div>
             </React.Fragment>
         )
     }
 }
+
 export default Locations;
 //Dungeon Route: 75% encounter Monster and 25% of encounter a Companion
     //Monster: 

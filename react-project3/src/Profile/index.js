@@ -3,13 +3,16 @@ import NavBar from '../NavBar';
 import PartyMembers from '../PartyMembers';
 import {Button} from 'semantic-ui-react'
 import {Link} from 'react-router-dom'
+import ShowCompanion from '../ShowCompanion'
 
 class Profile extends Component{
     constructor(){
         super();
         this.state = {
             companions: [],
-            gold: ''
+            gold: '',
+            viewingCompanion: false,
+            companionViewed: []
         }
     }
     componentDidMount(){
@@ -64,6 +67,19 @@ class Profile extends Component{
             this.props.history.push('/')
         }
     }
+    openCompanionModal = async (companion) => {
+        await this.setState({
+            viewingCompanion: true,
+            companionViewed: companion
+        })
+        console.log(this.state.viewingCompanion)
+        console.log(this.state.companionViewed)
+    }
+    closeModal = async () => {
+        await this.setState({
+            viewingCompanion: false
+        })
+    }
     render(){
         return(
             <Fragment>
@@ -73,7 +89,8 @@ class Profile extends Component{
                 <Link to="/create">
                     <Button>Create new companion</Button>
                 </Link>
-                <PartyMembers companions={this.state.companions} />
+                <PartyMembers companions={this.state.companions} openModal={this.openCompanionModal} />
+                <ShowCompanion open={this.state.viewingCompanion} companion={this.state.companionViewed} closeModal={this.closeModal}/>
             </Fragment>
         )
     }

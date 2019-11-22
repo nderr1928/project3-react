@@ -11,6 +11,9 @@ function RenderCompanionImage (props){
         case("Orc"):
             imgPath = '/testImages/orc.png'
             break;
+        case 'Dwarf':
+            imgPath =  '/testImages/dwarf.png'
+            break;
         default:
             imgPath = '/testImages/default.gif'
             break;

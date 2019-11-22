@@ -7,7 +7,6 @@ import MainContainer from './MainContainer';
 import CharacterCreation from './CharacterCreation'
 import Profile from './Profile'
 import Locations from './Locations'
-import ShowCompanion from './ShowCompanion'
 
 const my404 = () => {
   return(
@@ -28,7 +27,6 @@ function App() {
         <Route exact path='/create' component={CharacterCreation} />
         <Route exact path='/locations' component={Locations} />
         <Route exact path='/profile' component={Profile} />
-        <Route exact path='companion/:companion_id' component={ShowCompanion}/>
         <Route component={my404} />
       </Switch>
     </main>

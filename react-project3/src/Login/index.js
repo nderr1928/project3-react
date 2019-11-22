@@ -2,10 +2,6 @@ import React, {Component} from 'react';
 import { Form, Label, Button, Card, Message, Header} from 'semantic-ui-react';
 import {Link} from 'react-router-dom'
 
-const style = {
-
-}
-
 class Login extends Component{
 	constructor(){
 		super();

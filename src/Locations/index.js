@@ -337,7 +337,7 @@ class Locations extends Component{
         return(
             <React.Fragment>
                 <NavBar />
-                <Grid>
+                <Grid divided>
                     <Grid.Column>
                         <Grid.Row>
                             <Button type="button" onClick={this.openMarketModal}>Market</Button>

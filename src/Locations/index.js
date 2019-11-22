@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import NavBar from '../NavBar';
 import {Card, Button, Grid} from 'semantic-ui-react';
+import Market from '../Market'
+import Dungeon from '../Dungeon'
 
 const locationSelectionStyle = {
     display: 'flex',
@@ -35,7 +37,9 @@ class Locations extends Component{
             image: '',
             item_name: '',
             description: '',
-            effect: ''
+            effect: '',
+            marketModal: false,
+            dungeonModal: false
         }
     }
 // Location Page
@@ -305,6 +309,30 @@ class Locations extends Component{
             console.log("item does not exist")
         }
     }
+    openMarketModal = () => {
+        this.setState({
+            marketModal: true,
+            dungeonModal: false
+        })
+    }
+    closeMarketModal = () => {
+        this.setState({
+            marketModal: false,
+            dungeonModal: false
+        })
+    }
+    openDungeonModal = () => {
+        this.setState({
+            marketModal: false,
+            dungeonModal: true
+        })
+    }
+    closeDungeonModal = () => {
+        this.setState({
+            marketModal: false,
+            dungeonModal: false
+        })
+    }
     render(){
         return(
             <React.Fragment>
@@ -312,14 +340,16 @@ class Locations extends Component{
                 <Grid>
                     <Grid.Column>
                         <Grid.Row>
-                            <Button type="button" onClick={() => this.pickLocation(1)}>Market</Button>
+                            <Button type="button" onClick={this.openMarketModal}>Market</Button>
                         </Grid.Row>
                         <Grid.Row>
-                            <Button type="button" onClick={() => this.pickLocation(2)}>Dungeon</Button>
+                            <Button type="button" onClick={this.openDungeonModal}>Dungeon</Button>
                         </Grid.Row>
                     </Grid.Column>
+                    <Market open={this.state.marketModal} closeModal={this.closeMarketModal}/>
+                    <Dungeon open={this.state.dungeonModal} closeModal={this.closeDungeonModal} />
                 </Grid>
-                <div style={locationSelectionStyle}>
+                {/* <div style={locationSelectionStyle}>
                     
                 </div>
                     <Card centered>
@@ -335,7 +365,7 @@ class Locations extends Component{
                     <div style={bodyStyle}>
                         <h1>Body</h1>
 
-                    </div>
+                    </div> */}
             </React.Fragment>
         )
     }

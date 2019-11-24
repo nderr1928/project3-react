@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import { Form, Card, Label, Header, Button, Grid} from 'semantic-ui-react'
-import RenderCompanionImage from '../RenderCompanionImage'
 
 class CharacterCreation extends Component{
     constructor(){
@@ -129,7 +128,7 @@ class CharacterCreation extends Component{
                         </Card>
                     </Grid.Column>
                     <Grid.Column width={8}>
-                        <img src={this.state.image} />
+                        <img src={this.state.image} alt=''/>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

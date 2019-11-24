@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal, Button, Image, Menu} from 'semantic-ui-react';
+import {Modal, Button, Menu} from 'semantic-ui-react';
 
 const headerStyle = {
     display: 'flex',
@@ -14,7 +14,7 @@ const h1Style = {
 }
 
 function ShowCompanion (props){
-    console.log("loaded props", props);
+    // console.log("loaded props", props);
     let imgPath = ''
     switch(props.race){
         case("Human"):
@@ -24,7 +24,7 @@ function ShowCompanion (props){
             imgPath = '/testImages/default.gif'
             break;
     }
-    console.log(imgPath);
+    // console.log(imgPath);
     return(
         <Modal dimmer='blurring' open={props.open}>
             <Modal.Header style={headerStyle}>

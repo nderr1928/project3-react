@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 // import {Header} from 'semantic-ui-react';
 import NavBar from '../NavBar';
+// import CreateMonster from '../CreateMonster';
 
 
 class MainContainer extends Component{
@@ -41,6 +42,7 @@ class MainContainer extends Component{
                 <h1>
                     Welcome {this.state.currentUser.display_name}
                 </h1>
+                {/* <CreateMonster /> */}
             </React.Fragment>
         )
     }

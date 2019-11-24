@@ -2,7 +2,7 @@ import React from 'react';
 import {Card, Button} from 'semantic-ui-react';
 
 function PartyMembers(props){
-    console.log(props.companions)
+    // console.log(props.companions)
     const companions = props.companions.map((companion) => {
         return(
             <Card key={companion.id}>

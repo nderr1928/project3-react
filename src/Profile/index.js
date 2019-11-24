@@ -29,19 +29,19 @@ class Profile extends Component{
             })
 
             const parsedUser = await user.json()
-            console.log("currentUser:", parsedUser);
+            // console.log("currentUser:", parsedUser);
             this.setState({
                 gold: parsedUser.gold
             })
 
         } catch(err){
-            console.log(err);
+            // console.log(err);
             this.props.history.push('/')
         }
     }
     getCompanions = async () => {
         try{
-            console.log('get companions function');
+            // console.log('get companions function');
             const companions = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/companions/`, {
                 method: "GET",
                 credentials: 'include'
@@ -49,21 +49,21 @@ class Profile extends Component{
 
             const parsedCompanions = await companions.json()
 
-            console.log(parsedCompanions.data)
+            // console.log(parsedCompanions.data)
 
             for(let i=0; i<parsedCompanions.data.length; i++){
-                console.log(parsedCompanions.data[i].user.id)
-                console.log(parsedCompanions.data[i].user.id === localStorage.getItem('sessionUserId'))
+                // console.log(parsedCompanions.data[i].user.id)
+                // console.log(parsedCompanions.data[i].user.id === localStorage.getItem('sessionUserId'))
                 if(parsedCompanions.data[i].user.id.toString() === localStorage.getItem('sessionUserId').toString()){
                     this.setState({
                         companions: [...this.state.companions, parsedCompanions.data[i]]
                     })
                 }
             }
-            console.log(this.state.companions);
+            // console.log(this.state.companions);
 
         } catch(err){
-            console.log(err)
+            // console.log(err)
             this.props.history.push('/')
         }
     }
@@ -72,8 +72,8 @@ class Profile extends Component{
             viewingCompanion: true,
             companionViewed: companion
         })
-        console.log(this.state.viewingCompanion)
-        console.log(this.state.companionViewed)
+        // console.log(this.state.viewingCompanion)
+        // console.log(this.state.companionViewed)
     }
     closeModal = async () => {
         await this.setState({

@@ -42,7 +42,7 @@ class Login extends Component{
     }
 	render(){
 		return(
-			<Card centered style={{justifyContent: "center"}, {alignContent: 'center'}, {display: 'grid'}, {background: "linear-gradient(white, black)"}}>
+			<Card centered>
 				<Card.Content>
 					<Header centered="true">Login</Header>
 					<Form onSubmit={this.handleSubmit}>

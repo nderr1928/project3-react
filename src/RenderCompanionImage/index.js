@@ -20,7 +20,7 @@ function RenderCompanionImage (props){
     }
     console.log(imgPath);
     return(
-        <img src={imgPath} />
+        <img src={imgPath} alt=''/>
     )
 }
 

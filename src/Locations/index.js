@@ -1,23 +1,23 @@
 import React, {Component} from 'react';
 import NavBar from '../NavBar';
-import {Card, Button, Grid} from 'semantic-ui-react';
+import {Button, Grid} from 'semantic-ui-react';
 import Market from '../Market'
 import Dungeon from '../Dungeon'
 
-const locationSelectionStyle = {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignContent: 'center'
-}
+// const locationSelectionStyle = {
+//     display: 'flex',
+//     flexDirection: 'row',
+//     justifyContent: 'space-around',
+//     alignContent: 'center'
+// }
 
-const bodyStyle = {
-    backgroundImage: "url('/testImages/background.jpeg')", 
-    height: 100+'vh', 
-    width: 100+'vw',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover'
-}
+// const bodyStyle = {
+//     backgroundImage: "url('/testImages/background.jpeg')", 
+//     height: 100+'vh', 
+//     width: 100+'vw',
+//     backgroundRepeat: 'no-repeat',
+//     backgroundSize: 'cover'
+// }
 
 
 class Locations extends Component{

@@ -73,6 +73,7 @@ class Locations extends Component{
     }
     marketSubmit = async () => 
     {
+        console.log('marketSubmit')
         const itemUrl = `${process.env.REACT_APP_API_URL}/api/v1/items/`;
         const itemResponse = await fetch(itemUrl, 
         {
@@ -93,6 +94,7 @@ class Locations extends Component{
                 description: 'Heals a small amount of health.',
                 effect: '1'
             })
+        console.log('CREATTEITEM') 
         const itemUrl = `${process.env.REACT_APP_API_URL}/api/v1/items/`;
         const itemResponse = await fetch(itemUrl, 
         {
@@ -184,6 +186,7 @@ class Locations extends Component{
                     </Grid.Column>
                     <Market open={this.state.marketModal} closeModal={this.closeMarketModal}/>
                     <Dungeon open={this.state.dungeonModal} closeModal={this.closeDungeonModal} userGold={this.state.gold}/>
+
                 </Grid>
                 {/* <div style={locationSelectionStyle}>
                     

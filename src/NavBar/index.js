@@ -6,7 +6,8 @@ class NavBar extends Component{
     constructor(){
         super();
         this.state = {
-            active: ""
+            active: "",
+            gold: ''
         }
     }
     handleNav = async (e) => {
@@ -23,17 +24,17 @@ class NavBar extends Component{
                 <Menu pointing secondary>
                     <Menu.Item name="home" active={this.state.active==="home"}>
                         <Link to="/home">
-                            <Button value="home" onClick={this.handleNav}>Home</Button>
+                            <Button value="home" onClick={this.handleNav} size='small'>Home</Button>
                         </Link>
                     </Menu.Item>
                     <Menu.Item name="profile" value="profile" active={this.state.active==="profile"}>
                         <Link to="/profile" value="profile">
-                            <Button value="profile" onClick={this.handleNav}>Profile</Button>
+                            <Button size='small' value="profile" onClick={this.handleNav}>Profile</Button>
                         </Link>
                     </Menu.Item>
                     <Menu.Item name="locations" active={this.state.active==="locations"}>
                         <Link to="/locations">
-                            <Button value="locations" onClick={this.handleNav}>Locations</Button>
+                            <Button size='small' value="locations" onClick={this.handleNav}>Locations</Button>
                         </Link>
                     </Menu.Item>
                     <Menu.Item position="right">
@@ -44,7 +45,7 @@ class NavBar extends Component{
                                 msg: "You have successfully logged out"
                             }
                         }}>
-                            <Button value="logout" onClick={this.handleLogout}>Logout</Button>
+                            <Button size='small' value="logout" onClick={this.handleLogout}>Logout</Button>
                         </Link>
                     </Menu.Item>
                 </Menu>

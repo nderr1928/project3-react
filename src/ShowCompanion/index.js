@@ -13,6 +13,7 @@ const h1Style = {
     margin: 0
 }
 
+
 function ShowCompanion (props){
     // console.log("loaded props", props);
     let imgPath = ''
@@ -24,7 +25,7 @@ function ShowCompanion (props){
             imgPath = '/testImages/default.gif'
             break;
     }
-    // console.log(imgPath);
+    // console.log();
     return(
         <Modal dimmer='blurring' open={props.open}>
             <Modal.Header style={headerStyle}>

@@ -67,13 +67,20 @@ class Profile extends Component{
             this.props.history.push('/')
         }
     }
+    removeCompanions = async (id) => {
+        const deleteCompanionResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/companions/${id}/`, {
+            method: 'DELETE',
+            credentials: 'include'
+        })
+        const deleteCompanionParsed = await deleteCompanionResponse.json()
+        console.log(deleteCompanionParsed);
+        this.setState({companions: this.state.companions.filter((companion) => companion.id !== id )})
+    }
     openCompanionModal = async (companion) => {
         await this.setState({
             viewingCompanion: true,
             companionViewed: companion
         })
-        // console.log(this.state.viewingCompanion)
-        // console.log(this.state.companionViewed)
     }
     closeModal = async () => {
         await this.setState({
@@ -89,8 +96,8 @@ class Profile extends Component{
                 <Link to="/create">
                     <Button>Create new companion</Button>
                 </Link>
-                <PartyMembers companions={this.state.companions} openModal={this.openCompanionModal} />
-                <ShowCompanion open={this.state.viewingCompanion} companion={this.state.companionViewed} closeModal={this.closeModal}/>
+                <PartyMembers companions={this.state.companions} openModal={this.openCompanionModal} removeCompanion={this.removeCompanions} />
+                <ShowCompanion open={this.state.viewingCompanion} companion={this.state.companionViewed} closeModal={this.closeModal} />
             </Fragment>
         )
     }

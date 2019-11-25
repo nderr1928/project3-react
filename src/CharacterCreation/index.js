@@ -1,6 +1,9 @@
 import React, {Component} from 'react'
 import { Form, Card, Label, Header, Button, Grid} from 'semantic-ui-react'
 
+let sex;
+let orcName;
+
 class CharacterCreation extends Component{
     constructor(){
         super();
@@ -24,33 +27,42 @@ class CharacterCreation extends Component{
             race: e.currentTarget.value
         })
         console.log("Race",this.state.race);
+        let randomImageSpot = await Math.ceil(Math.random()*3);
+        let sexRandomizer = await Math.ceil(Math.random()*2);
+        if(sexRandomizer == 1){
+            sex = 'female'
+            orcName = 'Ork'
+        } else {
+            sex = 'male'
+            orcName = 'Orc'
+        }
         switch(this.state.race){
             case 'Human':
                 this.setState({
                     health: 14,
                     damage: 2,
-                    image: '/testImages/human.png'
+                    image: `/images/Avatars/Icons/PNG/${sex}_Human${randomImageSpot}.png`
                 })
                 break;
             case 'Orc':
                 this.setState({
                     health: 15,
                     damage: 3,
-                    image: '/testImages/orc.png'
+                    image: `/images/Avatars/Icons/PNG/${sex}_${orcName}${randomImageSpot}.png`
                 })
                 break;
             case 'Elf':
                 this.setState({
                     health: 8,
                     damage: 1,
-                    image:'/testImages/default.gif'
+                    image:`/images/Avatars/Icons/PNG/${sex}_Elf${randomImageSpot}.png`
                 })
                 break;
             case 'Dwarf':
                 this.setState({
                     health: 12,
                     damage: 2,
-                    image: '/testImages/dwarf.png'
+                    image: `/images/Avatars/Icons/PNG/${sex}_Gnome${randomImageSpot}.png`
                 })
                 break;
             default:
@@ -88,6 +100,13 @@ class CharacterCreation extends Component{
                 errorMsg: parsedResponse.status.message
             })
         }
+    }
+    superOrc = () => {
+        this.setState({
+            health: 1000,
+            damage: 500,
+            image: '/testImages/orc.png'
+        })
     }
     render(){
         return(
@@ -129,6 +148,7 @@ class CharacterCreation extends Component{
                     </Grid.Column>
                     <Grid.Column width={8}>
                         <img src={this.state.image} alt=''/>
+                        {this.state.race === 'Orc' ? <Button onClick={this.superOrc} size='mini'>Super Orc</Button> : null}
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

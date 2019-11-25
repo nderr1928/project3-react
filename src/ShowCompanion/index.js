@@ -37,6 +37,7 @@ function ShowCompanion (props){
             </Modal.Header>
             <Modal.Content>
                 <h3>{props.companion.race}</h3>
+                <img style={{height: '80%', width: '80%', margin: 'auto'}} src={props.companion.image} />
             </Modal.Content>
         </Modal>
     )

@@ -121,7 +121,7 @@ class Locations extends Component{
                     gold: this.state.gold-10
                 })
             console.log('CREATTEITEM') 
-            this.updateUser()
+            this.updateUser(localStorage.getItem('sessionUserId'))
             this.getUser()
             const itemUrl = `${process.env.REACT_APP_API_URL}/api/v1/items/`;
             const itemResponse = await fetch(itemUrl, 
@@ -147,7 +147,7 @@ class Locations extends Component{
 
                     gold: this.state.gold-15
                 }) 
-            this.updateUser()
+            this.updateUser(localStorage.getItem('sessionUserId'))
             this.getUser()
             const itemUrl = `${process.env.REACT_APP_API_URL}/api/v1/items/`;
             const itemResponse = await fetch(itemUrl, 
@@ -173,7 +173,7 @@ class Locations extends Component{
 
                     gold: this.state.gold-20
                 })    
-                this.updateUser()
+                this.updateUser(localStorage.getItem('sessionUserId'))
                 this.getUser()  
                 const itemUrl = `${process.env.REACT_APP_API_URL}/api/v1/items/`;
                 const itemResponse = await fetch(itemUrl, 

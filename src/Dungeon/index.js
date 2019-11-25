@@ -1,12 +1,21 @@
 import React from 'react';
 import {Modal, Button, Header} from 'semantic-ui-react';
+import Log from '../Log'
 
 const modalStyle = {
-    backgroundImage: 'url(/testImages/background.jpeg)',
+    // backgroundImage: 'url(/testImages/background.jpeg)',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     height: 75+'vh',
     width: 100+'%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignContent: 'center',
+    margin: 0
+}
+
+const buttonStyle = {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -72,36 +81,10 @@ const partyHealthCalc = () => {
     console.log("6, total party health:", partyHealth);
 }
 
-const randomizeEvent = () => {
-    let dice = Math.random(); //roll a dice between 0 and 1
-    if (dice < 0.75) {
-        console.log("aaa a monster")
-        if (partyHealth < 20) {
-            id = 1 
-            console.log(id)
-        } else if (partyHealth >= 20 && partyHealth < 40) {
-            id = 2;
-            console.log(id)
-        } else {
-            id = 3;
-            console.log(id)
-        }
-        start = false;
-        battle = true;
-        companionEncounter = false;
-        encounterMonster(id);
-    } else{
-        companionEncounter = true;
-        battle = false;
-        start = false;
-        console.log("you got a new friend")
-        // this.encounterCompanion();
-    }
-}
 
-const emptyParty = () => {
-    party = [];
-}
+// const emptyParty = () => {
+//     party = [];
+// }
 
 // const encounterMonster = async (id) => {
 //     console.log("7");
@@ -117,30 +100,88 @@ const emptyParty = () => {
 // }
 
 
-const Dungeon = (props) => {
-    return(
-        <Modal open={props.open}>
-            <Header>
-                <Button onClick={props.closeModal}>Exit Dungeon</Button>
-            </Header>
-            <div style={modalStyle}>
-                {start ? <Button onClick={() => randomizeEvent()} style={{height: 10+'%', minHeight: 50+'px', margin: 'auto'}}>Start</Button> : null}
-                {battle ? <Button style={{height: 10+'%', minHeight: 50+'px', margin: 'auto'}}>Attack</Button>  : null}
-                {battle ? <Button style={{height: 10+'%', minHeight: 50+'px', margin: 'auto'}}>Item</Button>  : null}
-                {companionEncounter ? <Button style={{height: 10+'%', minHeight: 50+'px', margin: 'auto'}}>Join</Button>  : null}
-                {companionEncounter ? <Button style={{height: 10+'%', minHeight: 50+'px', margin: 'auto'}}>Deny</Button>  : null}
-            </div>
-        </Modal>
-    )
+class Dungeon extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            battle: false,
+            start: true,
+            companionEncounter: false,
+            logStrings: []
+        }
+    }
+    componentDidMount = async () => {
+        await setParty();
+        await partyHealthCalc();
+    }
+    clearLog = async () => {
+        this.setState({
+            logStrings: []
+        })
+    }
+    appendString = async (string) => {
+        this.setState({
+            logStrings: [...this.state.logStrings, string]
+        })
+    }
+    randomizeEvent = () => {
+        let dice = Math.random(); //roll a dice between 0 and 1
+        if (dice < 0.75) {
+            console.log("aaa a monster")
+            if (partyHealth < 20) {
+                id = 1 
+                console.log(id)
+            } else if (partyHealth >= 20 && partyHealth < 40) {
+                id = 2;
+                console.log(id)
+            } else {
+                id = 3;
+                console.log(id)
+            }
+            this.setState({
+                start: false,
+                battle: true,
+                companionEncounter: false
+            })
+            encounterMonster(id);
+        } else{
+            this.setState({
+                start: false,
+                battle: false,
+                companionEncounter: true
+            })
+            console.log("you got a new friend")
+            // this.encounterCompanion();
+        }
+    }
+    render(){
+        return(
+            <Modal open={this.props.open}>
+                <Header>
+                    <Button onClick={this.props.closeModal}>Exit Dungeon</Button>
+                </Header>
+                <div style={modalStyle}>
+                    <Log log={this.state.logStrings} clearLog={this.clearLog} />
+                </div>
+                <div style={buttonStyle}>
+                    {this.state.start ? <Button onClick={this.randomizeEvent} style={{height: 10+'%', minHeight: 50+'px', margin: 'auto'}}>Start</Button> : null}
+                    {this.state.battle ? <Button style={{height: 10+'%', minHeight: 50+'px', margin: 'auto'}}>Attack</Button>  : null}
+                    {this.state.battle ? <Button style={{height: 10+'%', minHeight: 50+'px', margin: 'auto'}}>Item</Button>  : null}
+                    {this.state.companionEncounter ? <Button style={{height: 10+'%', minHeight: 50+'px', margin: 'auto'}}>Join</Button>  : null}
+                    {this.state.companionEncounter ? <Button style={{height: 10+'%', minHeight: 50+'px', margin: 'auto'}}>Deny</Button>  : null}
+                </div>
+            </Modal>
+        )
+    }
 }
 
 
-const test = async () => {
-    await setParty();
-    await partyHealthCalc();
-}
+// const test = async () => {
+//     await setParty();
+//     await partyHealthCalc();
+// }
 
-test();
+// test();
 
 export default Dungeon;
 

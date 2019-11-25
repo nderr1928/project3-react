@@ -88,63 +88,79 @@ class Locations extends Component{
         console.log("companion added!")
     }
     createItem = async (item) => {
-        if (item == 1) {            
-            this.setState ({
-                item_name: 'Minor Health Potion',
-                description: 'Heals a small amount of health.',
-                effect: '1'
-            })
-        console.log('CREATTEITEM') 
-        const itemUrl = `${process.env.REACT_APP_API_URL}/api/v1/items/`;
-        const itemResponse = await fetch(itemUrl, 
-        {
-            method: "POST",
-            credentials: 'include',
-            body: JSON.stringify(this.state),
-            headers: 
+        if (item == 1) {  
+            if (this.state.gold >= 10){          
+                this.setState ({
+                    item_name: 'Minor Health Potion',
+                    description: 'Heals a small amount of health.',
+                    effect: '1',
+
+                    gold: this.state.gold-10
+                })
+            console.log('CREATTEITEM') 
+            const itemUrl = `${process.env.REACT_APP_API_URL}/api/v1/items/`;
+            const itemResponse = await fetch(itemUrl, 
             {
-                'Content-Type': 'application/json'
+                method: "POST",
+                credentials: 'include',
+                body: JSON.stringify(this.state),
+                headers: 
+                {
+                    'Content-Type': 'application/json'
+                }
+            });
+                console.log("you got a minor potion!")
+            } else {
+                console.log("you do not have enough money for this item")
             }
-        });
-            console.log("you got a minor potion!")
         } else if (item == 2) {
-            this.setState ({
-                item_name: 'Health Potion',
-                description: 'Heals a substantial amount of health.',
-                effect: '5'
-            }) 
-        const itemUrl = `${process.env.REACT_APP_API_URL}/api/v1/items/`;
-        const itemResponse = await fetch(itemUrl, 
-        {
-            method: "POST",
-            credentials: 'include',
-            body: JSON.stringify(this.state),
-            headers: 
+            if (this.state.gold >= 10){   
+                this.setState ({
+                    item_name: 'Health Potion',
+                    description: 'Heals a substantial amount of health.',
+                    effect: '5',
+
+                    gold: this.state.gold-15
+                }) 
+            const itemUrl = `${process.env.REACT_APP_API_URL}/api/v1/items/`;
+            const itemResponse = await fetch(itemUrl, 
             {
-                'Content-Type': 'application/json'
+                method: "POST",
+                credentials: 'include',
+                body: JSON.stringify(this.state),
+                headers: 
+                {
+                    'Content-Type': 'application/json'
+                }
+            });                       
+                console.log("you got a potion")
+            } else {
+                console.log("you do not have enough money for this item")
             }
-        });                       
-            console.log("you got a potion")
         } else if (item == 3) {
-            this.setState ({
-                item_name: 'Super Health Potion',
-                description: 'Heal a large amount of health.',
-                effect: '10'
-            })      
-        const itemUrl = `${process.env.REACT_APP_API_URL}/api/v1/items/`;
-        const itemResponse = await fetch(itemUrl, 
-        {
-            method: "POST",
-            credentials: 'include',
-            body: JSON.stringify(this.state),
-            headers: 
-            {
-                'Content-Type': 'application/json'
+            if (this.state.gold >= 20){   
+                this.setState ({
+                    item_name: 'Super Health Potion',
+                    description: 'Heal a large amount of health.',
+                    effect: '10',
+
+                    gold: this.state.gold-20
+                })      
+                const itemUrl = `${process.env.REACT_APP_API_URL}/api/v1/items/`;
+                const itemResponse = await fetch(itemUrl, 
+                {
+                method: "POST",
+                credentials: 'include',
+                body: JSON.stringify(this.state),
+                headers: 
+                {
+                    'Content-Type': 'application/json'
+                }
+            });                  
+                console.log("you got a super potion")
+            } else {
+                console.log("you do not have enough money for this item")
             }
-        });                  
-            console.log("you got a super potion")
-        } else {
-            console.log("item does not exist")
         }
     }
     openMarketModal = () => {
@@ -184,27 +200,10 @@ class Locations extends Component{
                             <Button type="button" onClick={this.openDungeonModal}>Dungeon</Button>
                         </Grid.Row>
                     </Grid.Column>
-                    <Market open={this.state.marketModal} closeModal={this.closeMarketModal}/>
+                    <Market open={this.state.marketModal} createItem={this.createItem} closeModal={this.closeMarketModal}/>
                     <Dungeon open={this.state.dungeonModal} closeModal={this.closeDungeonModal} userGold={this.state.gold}/>
 
                 </Grid>
-                {/* <div style={locationSelectionStyle}>
-                    
-                </div>
-                    <Card centered>
-                        <h1>
-                            You have reached main location page
-                        </h1>
-                        
-                        <button type="button" onClick={() => this.handleSubmit()}>Add Companion</button>
-                        <button type="button" onClick={() => this.createItem(1)}>minor potion</button>
-                        <button type="button" onClick={() => this.createItem(2)}>potion</button>
-                        <button type="button" onClick={() => this.createItem(3)}>super potion</button>
-                    </Card>
-                    <div style={bodyStyle}>
-                        <h1>Body</h1>
-
-                    </div> */}
             </React.Fragment>
         )
     }

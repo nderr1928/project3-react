@@ -4,8 +4,8 @@ import Log from '../Log'
 
 const modalStyle = {
     // backgroundImage: 'url(/testImages/background.jpeg)',
-    backgroundSize: 'cover',
-    backgroundRepeat: 'no-repeat',
+    // backgroundSize: 'cover',
+    // backgroundRepeat: 'no-repeat',
     height: 75+'vh',
     width: 100+'%',
     display: 'flex',
@@ -27,24 +27,12 @@ const buttonStyle = {
 let party = [];
 let monster = {};
 let partyHealth = 0;
-// let randomizedCompanions = {};
+let partyAttack = 0;
 let id;
-let battle = false;
-let companionEncounter = false;
-let start = true;
-
-const encounterMonster = async (id) => {
-    console.log("7");
-    let rawMonster = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/monsters/${id}/`, {
-        credentials: 'include',
-        method: "GET"
-    })
-    console.log('8');
-    let parsedMonster = await rawMonster.json()
-    console.log('9')
-    monster = parsedMonster
-    console.log("10", monster)
-}
+let enemyExp;
+let enemyGold;
+let accumulatedExp = 0;
+let accumulatedGold = 0;
 
 const setParty = async () => {
     try{
@@ -71,34 +59,6 @@ const setParty = async () => {
     }
 }
 
-const partyHealthCalc = () => {
-    console.log("5");
-    for (let i = 0; i<party.length; i++) {
-        console.log('5a', i)
-        partyHealth = partyHealth + party[i].health
-        console.log("total partyHealth at iteration", i, ";", partyHealth)
-    }
-    console.log("6, total party health:", partyHealth);
-}
-
-
-// const emptyParty = () => {
-//     party = [];
-// }
-
-// const encounterMonster = async (id) => {
-//     console.log("7");
-//     let rawMonster = await fetch(process.env.REACT_APP_API_URL + '/api/v1/monsters/1/', {
-//         credentials: 'include',
-//         method: "GET"
-//     })
-//     console.log('8');
-//     let parsedMonster = await rawMonster.json()
-//     console.log('9')
-//     monster = parsedMonster
-//     console.log("10", monster)
-// }
-
 
 class Dungeon extends React.Component{
     constructor(props){
@@ -107,20 +67,62 @@ class Dungeon extends React.Component{
             battle: false,
             start: true,
             companionEncounter: false,
-            logStrings: []
+            playerTurn: false,
+            logStrings: [],
+            randomCompanion: {
+                name : '',
+                race : '',
+                char_class : '',
+                level : '',
+                experience : '',
+                health : '',
+                damage : '',
+                image : ''
+            },
+            enemyHealth: '',
+            partyHealth: '',
+            totalPartyHealth: '',
+            partyAttack: ''
         }
     }
     componentDidMount = async () => {
         await setParty();
-        await partyHealthCalc();
+        await this.partyHealthCalc();
+        await this.partyAttackCalc();
+    }
+    partyHealthCalc = () => {
+        console.log("5");
+        for (let i = 0; i<party.length; i++) {
+            console.log('5a', i)
+            partyHealth = partyHealth + party[i].health
+            console.log("total partyHealth at iteration", i, ";", partyHealth)
+        }
+        this.setState ({
+            totalPartyHealth: partyHealth,
+            partyHealth: partyHealth
+        })
+        console.log("6, total party health:", partyHealth);
+    }
+    partyAttackCalc = () => {
+        console.log("5");
+        for (let i = 0; i<party.length; i++) {
+            console.log('5a', i)
+            partyAttack = partyAttack + party[i].damage
+            console.log("total partyAttack at iteration", i, ";", partyAttack)
+        }
+        this.setState ({
+            partyAttack: partyAttack
+        })
+        console.log("6, total party health:", partyAttack);
     }
     clearLog = async () => {
-        this.setState({
+        await this.setState({
             logStrings: []
         })
+        console.log('logCleared');
     }
     appendString = async (string) => {
-        this.setState({
+        await this.setState({
             logStrings: [...this.state.logStrings, string]
         })
     }
@@ -128,14 +130,20 @@ class Dungeon extends React.Component{
         let dice = Math.random(); //roll a dice between 0 and 1
         if (dice < 0.75) {
             console.log("aaa a monster")
-            if (partyHealth < 20) {
+            if (this.state.totalPartyHealth < 20) {
                 id = 1 
+                enemyGold = 40;
+                enemyExp = 10;
                 console.log(id)
-            } else if (partyHealth >= 20 && partyHealth < 40) {
+            } else if (this.state.totalPartyHealth >= 20 && this.state.totalPartyHealth < 40) {
                 id = 2;
+                enemyGold = 80;
+                enemyExp = 20;
                 console.log(id)
             } else {
                 id = 3;
+                enemyGold = 160;
+                enemyExp = 40;
                 console.log(id)
             }
             this.setState({
@@ -143,45 +151,214 @@ class Dungeon extends React.Component{
                 battle: true,
                 companionEncounter: false
             })
-            encounterMonster(id);
+            this.encounterMonster(id);
         } else{
             this.setState({
                 start: false,
                 battle: false,
                 companionEncounter: true
             })
+            this.encounterCompanion();
             console.log("you got a new friend")
             // this.encounterCompanion();
         }
     }
+    encounterMonster = async (id) => {
+        console.log("7");
+        let rawMonster = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/monsters/${id}/`, {
+            credentials: 'include',
+            method: "GET"
+        })
+        console.log('8');
+        let parsedMonster = await rawMonster.json()
+        console.log('9')
+        monster = parsedMonster
+        this.setState({
+            enemyHealth: monster.health
+        })
+        console.log("10", monster);
+        const string = `An aggresive ${monster.mons_type} approaches the party.`;
+        console.log(string);
+        this.appendString(string);
+        this.attackRandomizer();
+    }
+    attackRandomizer = async () => {
+        const dice = Math.random(); //roll a dice between 0 and 1
+        if (dice < 0.50) {
+            const string = `The enemy attacks first!`
+            this.appendString(string);
+            this.enemyAttack();
+        } else{
+            const string = `The party attacks first!`
+            this.appendString(string);
+            console.log("party attacks first")
+            this.setState({
+                playerTurn: true
+            })
+        }
+    }
+    enemyAttack = async () => {
+        const string = await `The enemy deals ${monster.damage} point(s) of damage to the party.`
+        await this.appendString(string);
+        if(this.state.partyHealth <= 0 ){
+            await this.partyDeath();
+        } else{
+            await this.setState({
+                playerTurn: true,
+                partyHealth: this.state.partyHealth - monster.damage
+            })
+            const string1 = await `It is your turn to attack.`
+            await this.appendString(string1);
+        }
+    }
+    partyDeath = () => {
+        console.log('party died');
+    }
+    partyAttack = async () => {
+        if(this.state.playerTurn === true){
+            const string = `The party deals ${monster.damage} point(s) of damage to the monster.`
+            this.appendString(string);
+            if(this.state.enemyHealth - this.state.partyAttack <= 0){
+                await this.setState({
+                    enemyHealth: 0
+                })
+            } else{
+                await this.setState({
+                    enemyHealth: this.state.enemyHealth - this.state.partyAttack
+                })
+            }
+            console.log(this.state.enemyHealth);
+            if(this.state.enemyHealth <= 0 ){
+                await this.enemyDeath();
+            } else{
+                await this.setState({
+                    playerTurn: false
+                })
+                await this.enemyAttack();
+            }
+        }
+    }
+    enemyDeath = async () => {
+        const string1 = `The ${monster.mons_type} has been slain!`
+        this.appendString(string1);
+        const string2 = `You have earned ${enemyExp} exp points and ${enemyGold} gold.`
+        this.appendString(string2);
+        console.log('enemy died');
+        accumulatedExp += enemyExp;
+        console.log(accumulatedExp);
+        accumulatedGold += enemyGold;
+        console.log(accumulatedGold);
+        this.setState({
+            start: true,
+            battle: false,
+            companionEncounter: false
+        })
+    }
+    encounterCompanion = async () => {
+        const randomName = await fetch('https://uinames.com/api/?amount=1')
+        const parsedName = await randomName.json();
+        console.log(parsedName)
+        const arrRace = ['Human', 'Elf', 'Orc', 'Dwarf']
+        const arrClass = ['Rogue', 'Warrior', 'Mage']
+        this.setState ({
+            randomCompanion: {
+                name : parsedName.name,
+                race : arrRace[Math.floor(Math.random() * 4)],
+                char_class : arrClass[Math.floor(Math.random() * 3)],
+                level : 1,
+                experience : 0,
+                health : 1 * 10,
+                damage : 1,
+                image : "nullstring"
+            }
+        })
+        const string = `You are approched by a ${this.state.randomCompanion.race} ${this.state.randomCompanion.char_class} named ${this.state.randomCompanion.name}. They want to join your party. Will you accept or deny them?`
+        console.log(string)
+        this.appendString(string);
+    }
+    companionJoin = async () => {
+        const companionUrl = `${process.env.REACT_APP_API_URL}/api/v1/companions/`;
+        const companionResponse = await fetch(companionUrl, {
+            method: "POST",
+            credentials: 'include',
+            body: JSON.stringify(this.state.randomCompanion),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const string = `You have accepted ${this.state.randomCompanion.name}, the ${this.state.randomCompanion.race} ${this.state.randomCompanion.char_class} into your party! They will join you on your next expedition.`
+        this.appendString(string);
+        console.log("companion added!")
+        this.setState({
+            battle: false,
+            start: true,
+            companionEncounter: false
+        })
+    }
+    companionReject = () => {
+        const string = `You have declined ${this.state.name}'s request to join. They walk away looking disappointed.`
+        this.appendString(string);
+        this.setState({
+            battle: false,
+            start: true,
+            companionEncounter: false
+        })
+    }
+    collect = () => {
+        this.gainGold(localStorage.getItem('sessionUserId'));
+        this.setState({
+            logStrings: []
+        })
+        const string = `You have earned ${accumulatedGold} and ${accumulatedExp} exp points.`
+        this.appendString(string)
+        accumulatedGold = 0
+        accumulatedExp = 0
+
+    }
+    gainGold = async (id) => {
+        const gold = this.props.userGold + accumulatedGold;
+        console.log('gold amount:', gold)
+        console.log(typeof(gold));
+        // try{
+        //     const editResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/users/${id}/gold`, {
+        //         method: 'PATCH',
+        //         credentials: 'include',
+        //         body: JSON.stringify(gold),
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         }
+        //     })
+        // } catch(err){
+        //     console.log(err)
+        // }
+    }
     render(){
         return(
             <Modal open={this.props.open}>
-                <Header>
-                    <Button onClick={this.props.closeModal}>Exit Dungeon</Button>
+                <Header style={{height: 40+'px', padding: 0}}>
+                    {this.state.start ? <Button onClick={this.props.closeModal} color='red' floated='left'>Exit Dungeon</Button> : null}
+                    {this.state.start ? <Button color='yellow' floated='right' onClick={this.collect}>Collect</Button> : null}
                 </Header>
+                <div style={{borderTop: '2px black solid',borderBottom: '2px black solid', display: "flex", flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <h1 style={{margin: 0}}>Party Health: {this.state.partyHealth}</h1>
+                    {this.state.start ? <h1 style={{margin: 0}}>Dungeon</h1> : null}
+                    {this.state.battle ? <h1 style={{margin: 0}}>Enemy Health: {this.state.enemyHealth}</h1> : null}
+                    {this.state.companionEncounter ? <h1 style={{margin: 0}}>Companion Encounter</h1> : null}
+                </div>
                 <div style={modalStyle}>
                     <Log log={this.state.logStrings} clearLog={this.clearLog} />
                 </div>
                 <div style={buttonStyle}>
-                    {this.state.start ? <Button onClick={this.randomizeEvent} style={{height: 10+'%', minHeight: 50+'px', margin: 'auto'}}>Start</Button> : null}
-                    {this.state.battle ? <Button style={{height: 10+'%', minHeight: 50+'px', margin: 'auto'}}>Attack</Button>  : null}
+                    {this.state.start ? <Button onClick={this.randomizeEvent} style={{height: 10+'%', minHeight: 50+'px', margin: 'auto'}} color='blue'>Explore</Button> : null}
+                    {this.state.battle ? <Button style={{height: 10+'%', minHeight: 50+'px', margin: 'auto'}} onClick={this.partyAttack}>Attack</Button>  : null}
                     {this.state.battle ? <Button style={{height: 10+'%', minHeight: 50+'px', margin: 'auto'}}>Item</Button>  : null}
-                    {this.state.companionEncounter ? <Button style={{height: 10+'%', minHeight: 50+'px', margin: 'auto'}}>Join</Button>  : null}
-                    {this.state.companionEncounter ? <Button style={{height: 10+'%', minHeight: 50+'px', margin: 'auto'}}>Deny</Button>  : null}
+                    {this.state.companionEncounter ? <Button style={{height: 10+'%', minHeight: 50+'px', margin: 'auto'}} onClick={this.companionJoin} color='green'>Accept</Button>  : null}
+                    {this.state.companionEncounter ? <Button style={{height: 10+'%', minHeight: 50+'px', margin: 'auto'}} onClick={this.companionReject} color="red">Deny</Button>  : null}
                 </div>
             </Modal>
         )
     }
 }
-
-
-// const test = async () => {
-//     await setParty();
-//     await partyHealthCalc();
-// }
-
-// test();
 
 export default Dungeon;
 
@@ -420,7 +597,7 @@ export default Dungeon;
 //                     })
 //             updateChar()
 //         }
-//         //Put edited character, with new XP, into our database
+// //         //Put edited character, with new XP, into our database
 //         updateChar = () => {
 //             try {
 //                 const editItemUrl = `${process.env.REACT_APP_API_URL}/api/v1/companions/${this.state.charToEdit.id}/`;

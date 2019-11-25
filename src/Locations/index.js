@@ -24,9 +24,6 @@ class Locations extends Component{
     constructor(props){
         super(props);
         this.state = {
-            party: [],
-            monster: {},
-            partyHealth: 0,
             name: "",
             race: "",
             char_class: "",
@@ -39,195 +36,34 @@ class Locations extends Component{
             description: '',
             effect: '',
             marketModal: false,
-            dungeonModal: false
+            dungeonModal: false,
+            gold: ''
         }
     }
 // Location Page
-// 
-    pickLocation = async (LocationID) => { //1= Dungeon 2 = Market 
-        const locationUrl = `${process.env.REACT_APP_API_URL}/api/v1/locations/${LocationID}/`;
-        const locationResponse = await fetch(locationUrl, {
-            method: 'GET',
-            credentials: 'include'
-        })
-        const parsedLocation = await locationResponse.json();
-        if (LocationID === 2){
-            //this.props.history.push("/locations/2/")
-            let dice = Math.random(); //roll a dice between 0 and 1
-             if (dice < .75) {
-                console.log("aaa a monster")
-                this.encounterMonster();
-             } else{
-                console.log("you got a new friend")
-                this.encounterCompanion();
-             }
-        }
-        //Dungeon or Market
-        if (LocationID === 1) {
-            // this.props.history.push("/locations/1/")
-            let dice=Math.random();
-            if (dice <.85){
-                //listMarketItem();
-                console.log("going shopping")
-            } else {
-                //encounterCompanion();
-                console.log("you got a new friend")
-            }
-        } 
+//  
+    componentDidMount = () => {
+        this.getUser()
     }
-    setParty = async () => 
-    {
+    getUser = async () => {
         try{
-            console.log('get party');
-            const companions = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/companions/`, {
-                method: "GET",
-                credentials: 'include'
-            });
-            const parsedCompanions = await companions.json()
-            console.log(parsedCompanions.data)
-            for(let i=0; i<parsedCompanions.data.length; i++){
-                console.log(parsedCompanions.data[i].user.id)
-                console.log(parsedCompanions.data[i].user.id == localStorage.getItem('sessionUserId'))
-                if(parsedCompanions.data[i].user.id.toString() == localStorage.getItem('sessionUserId').toString()){
-                    this.setState({
-                        party: [...this.state.party, parsedCompanions.data[i]]
-                    })
-                    console.log(this.state.party)
-                }
-            }
+            // console.log("get user function");
+            const userId = localStorage.getItem('sessionUserId');
+            const user = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/users/${userId}`, {
+                credentials: 'include',
+                method: "GET"
+            })
+
+            const parsedUser = await user.json()
+            // console.log("currentUser:", parsedUser);
+            this.setState({
+                gold: parsedUser.gold
+            })
+
         } catch(err){
-            console.log(err)
+            // console.log(err);
             this.props.history.push('/')
         }
-    }
-    encounterMonster = async () => 
-    {
-        let setParty = await this.setParty()
-        console.log("monster encountered")
-        console.log(this.state.party)
-        let party = this.state.party
-        let monster = this.state.monster
-        console.log(party)
-        let partyHealth = this.state.partyHealth
-        console.log(partyHealth)
-        for (let i=0; i< party.length; i++) {
-            partyHealth = partyHealth + party[i].health
-            console.log(partyHealth)
-        }
-        //fetch data from monster with location dungeon
-        if (partyHealth < 20) {
-            const rawMonster = await fetch(process.env.REACT_APP_API_URL + '/api/v1/monsters/1/', {
-                    credentials: 'include',
-                    method: "GET"
-                })
-            const parsedMonster = await rawMonster.json()
-            monster = parsedMonster
-            console.log(monster)
-        } else if (partyHealth >= 20 && partyHealth < 40) {
-            const rawMonster = await fetch(process.env.REACT_APP_API_URL + '/api/v1/monsters/2/', {
-                    credentials: 'include',
-                    method: "GET"
-                })
-            const parsedMonster = await rawMonster.json()
-            monster = parsedMonster
-            console.log(monster)
-        } else {
-            let rawMonster = await fetch(process.env.REACT_APP_API_URL + '/api/v1/monsters/3/', {
-                    credentials: 'include',
-                    method: "GET"
-                })
-            const parsedMonster = await rawMonster.json()
-            monster = parsedMonster
-            console.log(monster)
-        }
-        
-        while (monster.health != 0 && partyHealth != 0 ) 
-        {   
-            console.log('you are in the while loop')
-            let monsterDice = Math.random()
-            for (let i = 0 ; i < party.length; i++) 
-            {
-                let partyDice = Math.random()
-                console.log(party[i])
-                if (monsterDice > partyDice) 
-                {
-                    party[i].health = party[i].health - monster.damage
-                    console.log("party member health", party[i].health)
-                    if (party[i].health <= 0) 
-                    {
-                        console.log("has died", party[i])
-                        party.splice(i,1)
-                    }
-                } else 
-                {
-                    monster.health = monster.health - party[i].damage 
-                    console.log("monster health", monster.health)
-                    if (monster.health <= 0) 
-                    {
-                        monster.health = 0
-                    }
-                }
-                for (let i = 0; i<party.length; i++) 
-                {
-                    partyHealth = partyHealth + party[i].health
-                    console.log("total partyHealth", partyHealth)
-                }
-                if (partyHealth <= 0)
-                {
-                    partyHealth = 0
-                } 
-            }
-        }
-        if (monster.health == 0) {
-            console.log("you got gold and exp")
-            this.setState({
-                party: []
-            })
-            //gain experience and gold
-        } else if (partyHealth == 0) {
-            console.log("you have died")
-            this.setState({
-                party: []
-            })
-        }
-        else {
-            console.log("you are very, very lost")
-            this.setState({
-                party: []
-            })
-            //redirect home
-        }
-    }
-    encounterCompanion = async () => {
-        const randomName = await fetch('https://uinames.com/api/?amount=1')
-        const parsedName = await randomName.json();
-        console.log(parsedName)
-        const arrRace = ['Human', 'Elf', 'Orc', 'Dwarf']
-        const arrClass = ['Rogue', 'Warrior', 'Mage']
-        this.setState ({
-            name : parsedName.name,
-            race : arrRace[Math.floor(Math.random() * 4)],
-            char_class : arrClass[Math.floor(Math.random() * 3)],
-            level : 1,
-            experience : 0,
-            health : 1 * 10,
-            damage : 1,
-            image : "nullstring"
-        })
-    }
-    handleSubmit = async () => {
-        const companionUrl = `${process.env.REACT_APP_API_URL}/api/v1/companions/`;
-        const companionResponse = await fetch(companionUrl, 
-        {
-            method: "POST",
-            credentials: 'include',
-            body: JSON.stringify(this.state),
-            headers: 
-            {
-                'Content-Type': 'application/json'
-            }
-        });
-        console.log("companion added!")
     }
     encounterMarket = () => 
     {
@@ -347,7 +183,7 @@ class Locations extends Component{
                         </Grid.Row>
                     </Grid.Column>
                     <Market open={this.state.marketModal} closeModal={this.closeMarketModal}/>
-                    <Dungeon open={this.state.dungeonModal} closeModal={this.closeDungeonModal} />
+                    <Dungeon open={this.state.dungeonModal} closeModal={this.closeDungeonModal} userGold={this.state.gold}/>
                 </Grid>
                 {/* <div style={locationSelectionStyle}>
                     

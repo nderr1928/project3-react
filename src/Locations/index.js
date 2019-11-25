@@ -200,27 +200,10 @@ class Locations extends Component{
                             <Button type="button" onClick={this.openDungeonModal}>Dungeon</Button>
                         </Grid.Row>
                     </Grid.Column>
-                    <Market open={this.state.marketModal} closeModal={this.closeMarketModal}/>
+                    <Market open={this.state.marketModal} createItem={this.createItem} closeModal={this.closeMarketModal}/>
                     <Dungeon open={this.state.dungeonModal} closeModal={this.closeDungeonModal} userGold={this.state.gold}/>
 
                 </Grid>
-                {/* <div style={locationSelectionStyle}>
-                    
-                </div>
-                    <Card centered>
-                        <h1>
-                            You have reached main location page
-                        </h1>
-                        
-                        <button type="button" onClick={() => this.handleSubmit()}>Add Companion</button>
-                        <button type="button" onClick={() => this.createItem(1)}>minor potion</button>
-                        <button type="button" onClick={() => this.createItem(2)}>potion</button>
-                        <button type="button" onClick={() => this.createItem(3)}>super potion</button>
-                    </Card>
-                    <div style={bodyStyle}>
-                        <h1>Body</h1>
-
-                    </div> */}
             </React.Fragment>
         )
     }

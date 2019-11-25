@@ -10,13 +10,27 @@ const Market = (props) => {
     const marketGrid = {
     	display: "grid",
     	gridTemplateColumns: "1fr 1fr 1fr"
+    };
+    const imgStyle = {
+    	width: "500px",
+    	height: "300px"
     }
+
+    const modalStyle = {
+    	backgroundImage:'url(/images/market.jpg)',
+    	backgroundSize: 'cover',
+    	minHeight: '600px',
+    	display: 'grid',
+    	justifyItems: 'center',
+    	alignItems: 'center'
+    };
 
 
 
     return(
 
-        <Modal open={props.open}>
+        <Modal style={modalStyle} open={props.open}>
+        <div style={{margin: 'auto'}}>
         <div style={marketGrid}>
         <div>
         <img style={potionStyle} src={'/images/potions/potions(5).png'} /><br/>
@@ -38,6 +52,7 @@ const Market = (props) => {
         <br/>
         <br/>
         <Button onClick={props.closeModal}>Exit Market</Button>
+        </div>
         </Modal>
     )
 }

@@ -40,9 +40,10 @@ class MainContainer extends Component{
             <React.Fragment>
                 <NavBar />
                 <h1>
-                    Welcome {this.state.currentUser.display_name}
+                    Welcome to Battle Log, {this.state.currentUser.display_name}
                 </h1>
-                {/* <CreateMonster /> */}
+                <h1>Game Assets Used:</h1>
+                
             </React.Fragment>
         )
     }

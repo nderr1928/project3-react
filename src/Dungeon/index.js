@@ -219,6 +219,13 @@ class Dungeon extends React.Component{
     }
     partyDeath = () => {
         console.log('party died');
+        const string = 'Your party has been defeated, come back when you are stronger - noob.'
+        this.appendString(string); 
+        this.setState({
+            start: true,
+            battle: false,
+            randomCompanion: false
+        })
     }
     partyAttack = async () => {
         if(this.state.playerTurn === true){

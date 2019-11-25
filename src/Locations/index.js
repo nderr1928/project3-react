@@ -98,7 +98,7 @@ class Locations extends Component{
         console.log('gold amount:', gold)
         try{
             const editResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/users/${id}/gold`, {
-                method: 'PATCH',
+                method: 'PUT',
                 credentials: 'include',
                 body: JSON.stringify(gold),
                 headers: {

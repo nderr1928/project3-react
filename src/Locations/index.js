@@ -94,7 +94,7 @@ class Locations extends Component{
     }
 
     updateUser = async (id) => {
-        const gold = this.state.gold
+        const gold = await this.state.gold
         console.log('gold amount:', gold)
         try{
             const editResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/users/${id}/gold`, {
@@ -113,7 +113,7 @@ class Locations extends Component{
     createItem = async (item) => {
         if (item == 1) {
             if (this.state.gold >= 10){
-                this.setState ({
+                await this.setState ({
                     item_name: 'Minor Health Potion',
                     description: 'Heals a small amount of health.',
                     effect: '1',
@@ -139,7 +139,7 @@ class Locations extends Component{
             }
         } else if (item == 2) {
             if (this.state.gold >= 10){
-                this.setState ({
+                await this.setState ({
                     item_name: 'Health Potion',
                     description: 'Heals a substantial amount of health.',
                     effect: '5',
@@ -164,7 +164,7 @@ class Locations extends Component{
             }
         } else if (item == 3) {
             if (this.state.gold >= 20){
-                this.setState ({
+                await this.setState ({
                     item_name: 'Super Health Potion',
                     description: 'Heal a large amount of health.',
                     effect: '10',

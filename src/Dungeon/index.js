@@ -59,6 +59,12 @@ const setParty = async () => {
     }
 }
 
+// const items = props.items.map((item, i) => {
+//     return(
+//         <Button key={i} size='mini'>{item.item_name}</Button>
+//     )
+// })
+
 
 class Dungeon extends React.Component{
     constructor(props){
@@ -321,7 +327,7 @@ class Dungeon extends React.Component{
         console.log(typeof(gold));
         try{
             const editResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/users/${id}/gold`, {
-                method: 'PATCH',
+                method: 'PUT',
                 credentials: 'include',
                 body: JSON.stringify(gold),
                 headers: {
@@ -335,7 +341,7 @@ class Dungeon extends React.Component{
     render(){
         return(
             <Modal open={this.props.open}>
-                <Header style={{height: 40+'px', padding: 0}}>
+                <Header style={{height: 60+'px', padding: 0}}>
                     {this.state.start ? <Button onClick={this.props.closeModal} color='red' floated='left'>Exit Dungeon</Button> : null}
                     {this.state.start ? <Button color='yellow' floated='right' onClick={this.collect}>Collect</Button> : null}
                 </Header>
@@ -677,30 +683,6 @@ export default Dungeon;
 //         }
         
 //         //Get all items associated with the user and set items to this array
-//         getItems = async (id) => {
-//             try{
-//                 console.log('get items');
-//                 const items = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/items/`, {
-//                     method: "GET",
-//                     credentials: 'include'
-//                 });
-//                 const parsedItems = await items.json()
-//                 console.log(parsedItems.data)
-//                 for(let i=0; i<parsedItems.data.length; i++){
-//                     console.log(parsedItems.data[i].user.id)
-//                     console.log(parsedItems.data[i].user.id == localStorage.getItem('sessionUserId'))
-//                     if(parsedItems.data[i].user.id.toString() == localStorage.getItem('sessionUserId').toString()){
-//                         this.setState({
-//                             items: [...this.state.items, parsedItems.data[i]]
-//                         })
-//                         console.log(this.state.items)
-//                     }
-//                 }
-//             } catch(err){
-//                 console.log(err)
-//                 this.props.history.push('/')
-//             }
-//         }
         
 //         // Market
 //     //Loop through characters in a way which allows each one to individually be called

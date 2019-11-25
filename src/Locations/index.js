@@ -37,13 +37,15 @@ class Locations extends Component{
             effect: '',
             marketModal: false,
             dungeonModal: false,
-            gold: ''
+            gold: '',
+            items: []
         }
     }
 // Location Page
 //  
-    componentDidMount = () => {
-        this.getUser()
+    componentDidMount = async () => {
+        await this.getUser();
+        await this.getItems();
     }
     getUser = async () => {
         try{
@@ -65,27 +67,30 @@ class Locations extends Component{
             this.props.history.push('/')
         }
     }
-    encounterMarket = () => 
-    {
-        this.setState({
-            market: true
-        })
-    }
-    marketSubmit = async () => 
-    {
-        console.log('marketSubmit')
-        const itemUrl = `${process.env.REACT_APP_API_URL}/api/v1/items/`;
-        const itemResponse = await fetch(itemUrl, 
-        {
-            method: "POST",
-            credentials: 'include',
-            body: JSON.stringify(this.state),
-            headers: 
-            {
-                'Content-Type': 'application/json'
+    getItems = async () => {
+        try{
+            console.log('get items');
+            const userId = localStorage.getItem('sessionUserId');
+            const items = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/items/`, {
+                method: "GET",
+                credentials: 'include'
+            });
+            const parsedItems = await items.json()
+            console.log(parsedItems.data)
+            for(let i=0; i<parsedItems.data.length; i++){
+                console.log(parsedItems.data[i].user.id)
+                console.log(parsedItems.data[i].user.id == localStorage.getItem('sessionUserId'))
+                if(parsedItems.data[i].user.id.toString() == localStorage.getItem('sessionUserId').toString()){
+                    this.setState({
+                        items: [...this.state.items, parsedItems.data[i]]
+                    })
+                    console.log(this.state.items)
+                }
             }
-        });
-        console.log("companion added!")
+        } catch(err){
+            console.log(err)
+            this.props.history.push('/')
+        }
     }
 
     updateUser = async (id) => {
@@ -226,7 +231,7 @@ class Locations extends Component{
                         </Grid.Row>
                     </Grid.Column>
                     <Market open={this.state.marketModal} createItem={this.createItem} closeModal={this.closeMarketModal}/>
-                    <Dungeon open={this.state.dungeonModal} closeModal={this.closeDungeonModal} userGold={this.state.gold}/>
+                    <Dungeon open={this.state.dungeonModal} closeModal={this.closeDungeonModal} userGold={this.state.gold} items={this.state.items} />
 
                 </Grid>
             </React.Fragment>

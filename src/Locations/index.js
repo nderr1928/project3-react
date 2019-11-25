@@ -111,83 +111,79 @@ class Locations extends Component{
     }
 
     createItem = async (item) => {
-        if (item == 1) {  
-            if (this.state.gold >= 10){          
+        if (item == 1) {
+            if (this.state.gold >= 10){
                 this.setState ({
                     item_name: 'Minor Health Potion',
                     description: 'Heals a small amount of health.',
                     effect: '1',
-
                     gold: this.state.gold-10
                 })
-            console.log('CREATTEITEM') 
-            this.updateUser(localStorage.getItem('sessionUserId'))
-            this.getUser()
+            console.log('CREATTEITEM')
+            // this.getUser()
             const itemUrl = `${process.env.REACT_APP_API_URL}/api/v1/items/`;
-            const itemResponse = await fetch(itemUrl, 
+            const itemResponse = await fetch(itemUrl,
             {
                 method: "POST",
                 credentials: 'include',
                 body: JSON.stringify(this.state),
-                headers: 
+                headers:
                 {
                     'Content-Type': 'application/json'
                 }
             });
                 console.log("you got a minor potion!")
+                this.updateUser(localStorage.getItem('sessionUserId'))
             } else {
                 console.log("you do not have enough money for this item")
             }
         } else if (item == 2) {
-            if (this.state.gold >= 10){   
+            if (this.state.gold >= 10){
                 this.setState ({
                     item_name: 'Health Potion',
                     description: 'Heals a substantial amount of health.',
                     effect: '5',
-
                     gold: this.state.gold-15
-                }) 
-            this.updateUser(localStorage.getItem('sessionUserId'))
-            this.getUser()
+                })
+            // this.getUser()
             const itemUrl = `${process.env.REACT_APP_API_URL}/api/v1/items/`;
-            const itemResponse = await fetch(itemUrl, 
+            const itemResponse = await fetch(itemUrl,
             {
                 method: "POST",
                 credentials: 'include',
                 body: JSON.stringify(this.state),
-                headers: 
+                headers:
                 {
                     'Content-Type': 'application/json'
                 }
-            });                       
+            });
                 console.log("you got a potion")
+                this.updateUser(localStorage.getItem('sessionUserId'))
             } else {
                 console.log("you do not have enough money for this item")
             }
         } else if (item == 3) {
-            if (this.state.gold >= 20){   
+            if (this.state.gold >= 20){
                 this.setState ({
                     item_name: 'Super Health Potion',
                     description: 'Heal a large amount of health.',
                     effect: '10',
-
                     gold: this.state.gold-20
-                })    
-                this.updateUser(localStorage.getItem('sessionUserId'))
-                this.getUser()  
+                })
+                // this.getUser()
                 const itemUrl = `${process.env.REACT_APP_API_URL}/api/v1/items/`;
-                const itemResponse = await fetch(itemUrl, 
+                const itemResponse = await fetch(itemUrl,
                 {
                 method: "POST",
                 credentials: 'include',
                 body: JSON.stringify(this.state),
-                headers: 
+                headers:
                 {
                     'Content-Type': 'application/json'
                 }
-
-            });                  
+            });
                 console.log("you got a super potion")
+                this.updateUser(localStorage.getItem('sessionUserId'))
             } else {
                 console.log("you do not have enough money for this item")
             }

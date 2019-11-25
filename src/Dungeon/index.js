@@ -319,18 +319,18 @@ class Dungeon extends React.Component{
         const gold = this.props.userGold + accumulatedGold;
         console.log('gold amount:', gold)
         console.log(typeof(gold));
-        // try{
-        //     const editResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/users/${id}/gold`, {
-        //         method: 'PATCH',
-        //         credentials: 'include',
-        //         body: JSON.stringify(gold),
-        //         headers: {
-        //             'Content-Type': 'application/json'
-        //         }
-        //     })
-        // } catch(err){
-        //     console.log(err)
-        // }
+        try{
+            const editResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/users/${id}/gold`, {
+                method: 'PATCH',
+                credentials: 'include',
+                body: JSON.stringify(gold),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+        } catch(err){
+            console.log(err)
+        }
     }
     render(){
         return(

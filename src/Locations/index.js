@@ -87,6 +87,24 @@ class Locations extends Component{
         });
         console.log("companion added!")
     }
+
+    updateUser = async (id) => {
+        const gold = this.state.gold
+        console.log('gold amount:', gold)
+        try{
+            const editResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/users/${id}/gold`, {
+                method: 'PATCH',
+                credentials: 'include',
+                body: JSON.stringify(gold),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+        } catch(err){
+            console.log(err)
+        }
+    }
+
     createItem = async (item) => {
         if (item == 1) {  
             if (this.state.gold >= 10){          
@@ -98,6 +116,8 @@ class Locations extends Component{
                     gold: this.state.gold-10
                 })
             console.log('CREATTEITEM') 
+            this.updateUser()
+            this.getUser()
             const itemUrl = `${process.env.REACT_APP_API_URL}/api/v1/items/`;
             const itemResponse = await fetch(itemUrl, 
             {
@@ -122,6 +142,8 @@ class Locations extends Component{
 
                     gold: this.state.gold-15
                 }) 
+            this.updateUser()
+            this.getUser()
             const itemUrl = `${process.env.REACT_APP_API_URL}/api/v1/items/`;
             const itemResponse = await fetch(itemUrl, 
             {
@@ -145,7 +167,9 @@ class Locations extends Component{
                     effect: '10',
 
                     gold: this.state.gold-20
-                })      
+                })    
+                this.updateUser()
+                this.getUser()  
                 const itemUrl = `${process.env.REACT_APP_API_URL}/api/v1/items/`;
                 const itemResponse = await fetch(itemUrl, 
                 {
@@ -156,6 +180,7 @@ class Locations extends Component{
                 {
                     'Content-Type': 'application/json'
                 }
+
             });                  
                 console.log("you got a super potion")
             } else {
